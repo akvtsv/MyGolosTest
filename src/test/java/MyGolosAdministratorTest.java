@@ -23,6 +23,7 @@ public class MyGolosAdministratorTest {
     @Before
     public void setUp() {
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide().screenshots(true).savePageSource(true));
+
     }
 
     @Test
@@ -39,23 +40,23 @@ public class MyGolosAdministratorTest {
 
     @Test
     public void B_SozdanieZakritogoVoprosa() {
-      /* *//* 1.2	Нажать кнопку "Создать опрос…"
-        Открыто окно "Создать новый опрос" с полем "Введите название для нового опроса"*//*
+        /* 1.2	Нажать кнопку "Создать опрос…"
+        Открыто окно "Создать новый опрос" с полем "Введите название для нового опроса"*/
         $(By.xpath("//button[text()='Создать опрос...']")).click();
 
-       *//* 1.3	В поле "Введите название для нового опроса" ввести: Опрос Тест
-        Поле "Введите название для нового опроса" успешно заполнено*//*
+       /* 1.3	В поле "Введите название для нового опроса" ввести: Опрос Тест
+        Поле "Введите название для нового опроса" успешно заполнено*/
         $(By.xpath("//input")).click();
         $(By.xpath("//input")).sendKeys("Опрос Тест");
-       *//* 1.4	Нажать кнопку "Создать"
+       /* 1.4	Нажать кнопку "Создать"
         Опрос успешно создан.
-        Открыта страница добавления вопросов в опрос."*//*
+        Открыта страница добавления вопросов в опрос."*/
         $(By.xpath("//button[text() = 'Создать ']")).click();
         $(".alert").shouldHave(Condition.text("Опрос успешно сохранен"));
         sleep(6000);//ждем 6 секунд пока пропадет алерт
 
         /*  1.5	Нажать кнопку "Назад к опросам"
-        Открыта страница создания опроса*//*
+        Открыта страница создания опроса*/
         $(By.xpath("//span[text()='Назад к опросам']")).click();
 
         /*1.6	Нажать кнопку "Создать опрос…"
@@ -251,17 +252,26 @@ public class MyGolosAdministratorTest {
         //11.3	Сохранить код опроса, указанный под названием созданного опроса	Код опроса успешно сохранен
         String key = $(By.xpath("//tr[@class='ng-star-inserted']/td/div//span")).text();
         key = key.substring(12);
-        $(By.xpath("//button[text()='Создать опрос...']")).click();
-        $(By.xpath("//input")).click();
-        $(By.xpath("//input")).sendKeys(key);
-        //11.4	Нажать кнопку "Запустить"	Опрос успешно запущен
 
-   }
+
+        //11.4	Нажать кнопку "Запустить"	Опрос успешно запущен
+        $(By.xpath("//td[@class='padding-right-0']//span[text()='Запустить']")).click();
+        $(By.xpath("//button[text()='Запустить опрос']")).click();
+        $(By.xpath("//div[text()=' "+key+" ']")).click();
+        $(By.xpath("//li[a[text()='Список опросов']]")).click();
+        $(new Selectors.ByText("aft@greenatom.ru")).click();
+        $(new Selectors.ByText("Выход")).click();
+        open("https://golos-temp.rosatom.ru");
+        $(By.xpath("//input[@formcontrolname='voteCode']")).click();
+        $(By.xpath("//input[@formcontrolname='voteCode']")).sendKeys(key);
+        $(By.xpath("//button[text()=' Начать опрос ']")).click();
+
+
+    }
 
     @Test
     public void F_LogoutManage() {
-       //$(new Selectors.ByText("aft@greenatom.ru")).click();
-       //$(new Selectors.ByText("Выход")).click();
+
     }
 
 }
